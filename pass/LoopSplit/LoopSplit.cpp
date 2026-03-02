@@ -151,7 +151,7 @@ LogicalResult LoopBisect::bisect() {
 
   // Split loop on the first comparison
   if (cmpMap.size() >= 1) {
-    auto[cmp, ccmp] = *cmpMap.begin();
+    auto [cmp, ccmp] = *cmpMap.begin();
 
     LDBG("Split cmp:    " << *cmp);
     LLVM_DEBUG(ccmp.dump());
