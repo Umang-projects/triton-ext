@@ -160,7 +160,29 @@ tt.func @split_kernel_step10(%arg0: tensor<256x!tt.ptr<f32>>, %arg1: i32, %arg2:
       scf.yield %sub : tensor<256xf32>
     }
     %5 = tt.addptr %arg5, %0 : tensor<256x!tt.ptr<f32>>, tensor<256xi32>
-    scf.yield %4, %5 : tensor<256xf32>, tensor<256x!tt.ptr<f32>>
+
+// -----
+
+// CHECK-LABEL: no_split_mask
+// CHECK: scf.for
+// CHECK: scf.if
+tt.func @no_split_mask(%arg0: !tt.ptr<f32>, %arg1: i32, %mid: i32) -> f32 {
+  %c0 = arith.constant 0 : i32
+  %c1 = arith.constant 1 : i32
+  %cst = arith.constant 0.0 : f32
+  %result:1 = scf.for %i = %c0 to %arg1 step %c1
+              iter_args(%acc = %cst) -> (f32) : i32 {
+    %mask = arith.cmpi slt, %i, %mid : i32
+    %ptr = tt.addptr %arg0, %i : !tt.ptr<f32>, i32
+    %val = tt.load %ptr, %mask : !tt.ptr<f32>
+    %cmp = arith.cmpi sgt, %i, %mid : i32
+    %4 = scf.if %cmp -> (f32) {
+      %add = arith.addf %acc, %val : f32
+      scf.yield %add : f32
+    } else {
+      scf.yield %acc : f32
+    }
+    scf.yield %4 : f32
   }
-  tt.return %2#0 : tensor<256xf32>
+  tt.return %result#0 : f32
 }

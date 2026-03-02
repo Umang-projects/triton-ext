@@ -103,9 +103,15 @@ private:
 ///  2. Is >=, <=, >, <
 ///  3. The comparand is loop-invariant
 /// Note: poor man's SCEV
-/// TODO: add support for mask logic
+/// NOTE: mask logic handled — skips tt.load mask operands
 void LoopBisect::getCmp(OpOperand &opr) {
   if (auto cmp = dyn_cast<arith::CmpIOp>(opr.getOwner())) {
+	for (auto user : cmp->getUsers()) {
+	    if (isa<tt::LoadOp>(user)) {
+	        LDBG("CmpI is a mask operand — skipping!");
+	        return;
+	    }
+	}
     CanonCmp ccmp(cmp, opr);
     if (ccmp.isValid()) {
       // Other most be loop invariant, needs full DFG analysis
