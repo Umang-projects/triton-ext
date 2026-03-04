@@ -103,15 +103,9 @@ private:
 ///  2. Is >=, <=, >, <
 ///  3. The comparand is loop-invariant
 /// Note: poor man's SCEV
-/// NOTE: mask logic handled — skips tt.load mask operands
+/// TODO: add support for mask logic
 void LoopBisect::getCmp(OpOperand &opr) {
   if (auto cmp = dyn_cast<arith::CmpIOp>(opr.getOwner())) {
-    for (auto user : cmp->getUsers()) {
-      if (isa<tt::LoadOp>(user)) {
-        LDBG("CmpI is a mask operand — skipping!");
-        return;
-      }
-    }
     CanonCmp ccmp(cmp, opr);
     if (ccmp.isValid()) {
       // Other most be loop invariant, needs full DFG analysis
@@ -181,7 +175,7 @@ LogicalResult LoopBisect::bisect() {
 
     /// TODO(sjw): update upstream peelForLoop
     /// bisect loop [lo .. midp)
-    /// bisect loop[midp .. hi)
+    /// bisect loop [midp .. hi)
     IRMapping mapping;
     b.setInsertionPointAfter(forOp);
     scf::ForOp newForOp = cast<scf::ForOp>(b.clone(*forOp, mapping));

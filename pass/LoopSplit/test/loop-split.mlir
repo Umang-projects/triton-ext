@@ -166,3 +166,29 @@ tt.func @split_kernel_step10(%arg0: tensor<256x!tt.ptr<f32>>, %arg1: i32, %arg2:
 }
 
 // -----
+
+// CHECK-LABEL: split_and_remove_load
+// CHECK: scf.for
+// CHECK:   tt.load
+// CHECK: scf.for
+// CHECK-NOT: tt.load
+tt.func @split_and_remove_load(%arg0: tensor<256x!tt.ptr<f32>>, %arg1: i32, %mid: i32) -> tensor<256xf32> {
+  %c0_i32 = arith.constant 0 : i32
+  %c1_i32 = arith.constant 1 : i32
+  %cst = arith.constant 0.000000e+00 : f32
+  %0 = tt.splat %c1_i32 : i32 -> tensor<256xi32>
+  %1 = tt.splat %cst : f32 -> tensor<256xf32>
+
+  %2:2 = scf.for %arg3 = %c0_i32 to %arg1 step %c1_i32 iter_args(%arg4 = %1, %arg5 = %arg0) -> (tensor<256xf32>, tensor<256x!tt.ptr<f32>>)  : i32 {
+    %cmp = arith.cmpi slt, %arg3, %mid : i32
+    %mask = tt.splat %cmp : i1 -> tensor<256xi1>
+
+    // Load using the splatted mask
+    %3 = tt.load %arg5, %mask, %1 : tensor<256x!tt.ptr<f32>>
+
+    %add = arith.addf %arg4, %3 : tensor<256xf32>
+    %5 = tt.addptr %arg5, %0 : tensor<256x!tt.ptr<f32>>, tensor<256xi32>
+    scf.yield %add, %5 : tensor<256xf32>, tensor<256x!tt.ptr<f32>>
+  }
+  tt.return %2#0 : tensor<256xf32>
+}
