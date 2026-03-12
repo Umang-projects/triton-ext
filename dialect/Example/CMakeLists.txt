@@ -1,10 +1,10 @@
-triton_extension(LoopBisectPass)
+triton_extension(ExampleDialect)
 
-# Add pass TableGen.
-set(PASS_TABLEGEN_OUTPUT "TritonExt${TRITON_EXT_CLASS}IncGen")
-set(LLVM_TARGET_DEFINITIONS Passes.td)
-mlir_tablegen(Passes.h.inc -gen-pass-decls -name Extension)
-add_public_tablegen_target(${PASS_TABLEGEN_OUTPUT})
+# Add dialect TableGen; creates `MLIR${dialect}IncGen` target.
+add_mlir_dialect(Example example)
+add_mlir_doc(Example Example Dialects/ -gen-dialect-doc -dialect=example)
+
+# Add TableGen files as includes.
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 # Add compile definitions for generated code.
@@ -15,18 +15,16 @@ add_compile_definitions(
 
 # Build the pass extension library (SHARED).
 add_mlir_library(${PROJECT_NAME}
-    LoopSplit.cpp
+    Example.cpp
 
     SHARED
 
     DEPENDS
-    ${PASS_TABLEGEN_OUTPUT}
+    MLIRExampleIncGen
 
     LINK_LIBS PUBLIC
     TritonExtensionSupport
-    MLIRPass
-    MLIRArithDialect
-    MLIRSCFDialect
+    MLIRDialect
     LLVMSupport
     MLIRSupport
 )
