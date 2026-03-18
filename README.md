@@ -1,7 +1,9 @@
 # Triton Extensions
 
 <a href="https://github.com/triton-lang/triton-ext/actions?query=workflow%3ACI"><img src="https://github.com/triton-lang/triton-ext/workflows/CI/badge.svg" alt="build status" /></a>
-<a href="https://triton-lang.slack.com/archives/C09U44YGR1T"><img src="https://img.shields.io/badge/slack-join_chat-blue.svg" alt="slack chat" /></a>
+<a href="https://discord.com/channels/1189498204333543425/1483539998702567587"><img src="https://img.shields.io/badge/discord-join_chat-blue.svg" alt="discord chat" /></a>
+
+
 
 A collection of out-of-tree extensions for the Triton compiler, including passes, dialects, backends, and language extensions.
 
