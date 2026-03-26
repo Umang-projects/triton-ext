@@ -12,23 +12,21 @@
 * simon@kernelize.ai @crobeck @abrown
 
 # Infrastructure
-/infra/ simon@kernelize.ai
+/support/ simon@kernelize.ai @abrown
+/testing/ simon@kernelize.ai @abrown
 
 # Pass extensions
-/pass/ simon@kernelize.ai
+/pass/ simon@kernelize.ai @abrown
 
 # Backend extensions
-/backend/ simon@kernelize.ai
+/backend/ simon@kernelize.ai @abrown
 
 # Dialect extensions
-/dialect/ simon@kernelize.ai
+/dialect/ simon@kernelize.ai @abrown
 
 # Language extensions
-/language/ simon@kernelize.ai
+/language/ simon@kernelize.ai @abrown
 
 # Build system
-/cmake/ simon@kernelize.ai
-/CMakeLists.txt simon@kernelize.ai
+/cmake/ simon@kernelize.ai @abrown
 
-# Documentation
-/README.md simon@kernelize.ai
