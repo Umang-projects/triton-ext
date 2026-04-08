@@ -19,6 +19,8 @@ dynamically loaded by Triton at runtime.
 Extensions are built on top of the upstream Triton infrastructure documented here:
 https://github.com/triton-lang/triton/tree/main/examples/plugins
 
+Slides from the January 2026 Triton Community Meetup:
+[Triton Community Meetup: Triton Extensions Jan 2026](https://docs.google.com/presentation/d/1dnm8uhvabdwqsQAsaPM7IRpEh2tktQ91E1d40r91n1M/edit?usp=sharing)
 ### Structure
 
 Each subdirectory's `CMakeLists.txt` is responsible for building its respective extensions.
