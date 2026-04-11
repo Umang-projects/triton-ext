@@ -48,8 +48,9 @@ Each subdirectory's `CMakeLists.txt` is responsible for building its respective 
 
 - C++ compiler with C++17 support
 - CMake (3.15 or later)
-- LLVM/MLIR: development shared libraries, headers, binaries (e.g., `mlir-tblgen`)
-- Triton: shared libraries and headers (depending on the above LLVM/MLIR libraries)
+- Triton built with TRITON_EXT_ENABLED=ON 
+
+Note: Extensions are enabled by default in Triton releases 3.7 and beyond.
 
 ## Build
 
